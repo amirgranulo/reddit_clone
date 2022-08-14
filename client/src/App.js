@@ -1,10 +1,13 @@
-import './style.css';
+import "./style.css";
+
+import Header from "./Header.js"
+import SubRedditHeader from "./SubredditHeader";
 
 function App() {
   return (
     <div>
-     <header className="text-green-800">text</header>
-    
+      <Header/>
+      <SubRedditHeader/>
     </div>
   );
 }

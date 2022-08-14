@@ -4,6 +4,10 @@ module.exports = {
         extend: {
             colors: {
                 primary: '#1B73E8',
+                reddit_dark: {
+                    DEFAULT: '#030303',
+                    bright: '#040f13'
+                }
             },
         },
     },
