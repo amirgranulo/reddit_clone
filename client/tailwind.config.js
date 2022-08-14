@@ -7,6 +7,10 @@ module.exports = {
                 reddit_dark: {
                     DEFAULT: '#030303',
                     bright: '#040f13'
+                },
+                reddit_text: {
+                    DEFAULT: 'rgb(215,218,220)',
+                    darker: "#a9a9a9"
                 }
             },
         },

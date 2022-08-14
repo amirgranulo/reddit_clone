@@ -33,7 +33,7 @@ const Header = () => {
         <PlusIcon className="text-white w-8 h-8 m-1 mx-2" />
       </button>
       <button className=" flex m-1 mx-1">
-        <div className="bg-gray-600 rounded-md" >
+        <div className="bg-reddit_dark-bright rounded-md" >
 
         <img src={Avatar} alt="Reddit avatar" className="block w-8 h-8"/>
         </div>
