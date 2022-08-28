@@ -97,7 +97,7 @@ app.get("/user", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  return res.cookie("token", "").send();
+  return res.cookie('token', '').send();
 });
 
 app.get("/posts",async (req,res) => {

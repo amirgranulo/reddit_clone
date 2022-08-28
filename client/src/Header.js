@@ -30,6 +30,7 @@ const Header = () => {
 
   const handleClickout = () => {
     setUserDropdownVisibility("hidden");
+    authModalContext.setVisible(false);
   };
   const authModalContext = useContext(AuthModalContext);
   const userContext = useContext(UserContext);
@@ -90,6 +91,7 @@ const Header = () => {
             </Button>
           </div>
         )}
+          <ClickOutHandler onClickOut={handleClickout}>
 
         <button
           className="rounded-md flex ml-4 mt-1 border border-gray-700"
@@ -107,8 +109,6 @@ const Header = () => {
 
           <ChevronDownIcon className="text-gray-500 w-6 h-6 mt-1 m-1" />
         </button>
-      </div>
-      <ClickOutHandler onClickOut={handleClickout}>
         <div
           className={
             "absolute text-center right-5 top-16 bg-reddit_dark border border-gray-700 z-5 rounded-md text-reddit_text overflow-hidden " +
@@ -136,6 +136,8 @@ const Header = () => {
 
         </div>
       </ClickOutHandler>
+      </div>
+
     </header>
   );
 };

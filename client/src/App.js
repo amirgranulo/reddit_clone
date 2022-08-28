@@ -6,15 +6,11 @@ import Header from "./Header.js";
 import AuthentificationModal from "./AuthentificationModal";
 import AuthModalContext from "./context/AuthModalContext";
 import UserContext from "./context/UserContext";
-import {
-  Switch,
-  Route,
-  Router,
-  BrowserRouter,
-  
-} from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import SubReddit from "./SubReddit";
 import PostPage from "./PostPage";
+
+// DOSO DO 46, PROBLEM : PROMJENI SE URL ALI NE I STRANICA ( TEK NAKON REFRESHA)
 function App() {
   const newHistory = createBrowserHistory();
   const [user, setUser] = useState({});
@@ -32,8 +28,11 @@ function App() {
   }, []);
 
   const logout = () => {
-    axios.post("http://localhost:5000/logout", { withCredentials: true });
-    setUser({});
+    axios
+      .post("http://localhost:5000/logout", { withCredentials: true })
+      .then(() => {
+        setUser({});
+      });
   };
 
   return (
@@ -44,15 +43,14 @@ function App() {
       }}
     >
       <UserContext.Provider value={{ ...user, setUser, logout }}>
-
-          <Router history={newHistory}>
+        <BrowserRouter>
           <Header />
 
-            <Switch>
-              <Route exact path="/" component={SubReddit}></Route>
-              <Route exact path="/comments/:id" component={PostPage}></Route>
-            </Switch>
-          </Router>
+          <Switch>
+            <Route exact path="/" component={SubReddit}></Route>
+            <Route exact path="/comments/:id" component={PostPage}></Route>
+          </Switch>
+        </BrowserRouter>
         <AuthentificationModal />
       </UserContext.Provider>
     </AuthModalContext.Provider>

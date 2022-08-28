@@ -66,9 +66,9 @@ const AuthentificationModal = (props) => {
     if (response.status === 200) {
       userContext.setUser({username});
       authModalContext.setVisible(false);
-      setEmail("");
+    /*  setEmail("");
       setPassword("");
-      setUsername("");
+      setUsername("");*/
     }
     }
     catch (error) {
