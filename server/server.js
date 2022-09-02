@@ -32,6 +32,16 @@ const db = mongoose.connection;
 
 db.on("error", console.log);
 
+const getUserFromToken = async (token) => {
+  const userFromToken = jwt.verify(token, secret);
+  try {
+    const user = await User.findById(userFromToken.id);
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 app.get("/", (req, res) => {
   res.send("ok");
 });
@@ -67,28 +77,23 @@ app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
   if (user.username) {
-   const passwordValid = bcrypt.compareSync(password, user.password)
-   if (passwordValid) {
-    jwt.sign({id:user._id},secret,(err,token) => {    
-        return res.cookie("token",token).send();
-    })
-      
-   }
-   else {
-    res.sendStatus(401).json("Invalid username or password");
-
-   }
-  }
-  else {
+    const passwordValid = bcrypt.compareSync(password, user.password);
+    if (passwordValid) {
+      jwt.sign({ id: user._id }, secret, (err, token) => {
+        return res.cookie("token", token).send();
+      });
+    } else {
+      res.sendStatus(401).json("Invalid username or password");
+    }
+  } else {
     res.sendStatus(401).json("Username does not exist");
   }
 });
 
 app.get("/user", async (req, res) => {
   const token = req.cookies.token;
-  const userFromToken = jwt.verify(token, secret);
   try {
-    const user = await User.findById(userFromToken.id);
+    const user = await getUserFromToken(token);
     return res.json({ username: user.username });
   } catch (error) {
     console.log(error);
@@ -97,23 +102,36 @@ app.get("/user", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  return res.cookie('token', '').send();
+  return res.cookie("token", "").send();
 });
 
-app.get("/posts",async (req,res) => {
+app.get("/posts", async (req, res) => {
   try {
-  const posts = await Post.find({})
-  return res.json(posts);
-  }
-  catch(error) {
+    const posts = await Post.find({});
+    return res.json(posts);
+  } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
-  
 });
-app.get("/posts/:id",async(req,res) => {
+
+app.post("/posts", async (req, res) => {
+  try {
+    const user = await getUserFromToken(req.cookies.token);
+
+    const { title, body } = req.body;
+    const post = new Post({ title: title,body: body, author: user.username, postedAt : });
+    const savedPost = await post.save();
+    return res.json(savedPost);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(401);
+  }
+});
+
+app.get("/posts/:id", async (req, res) => {
   const post = await Post.findById(req.params.id);
   res.json(post);
-})
+});
 
 app.listen(5000);

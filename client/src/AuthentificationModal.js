@@ -19,7 +19,7 @@ const AuthentificationModal = (props) => {
   const setModalTypeToLogin = () => {
     authModalContext.setVisible("login");
   };
-
+// Zajebava clickout na modale kao login...
   const modalTitleText = modalType === "login" ? "Login" : "Register";
 
   const [username, setUsername] = useState("");
@@ -66,9 +66,7 @@ const AuthentificationModal = (props) => {
     if (response.status === 200) {
       userContext.setUser({username});
       authModalContext.setVisible(false);
-    /*  setEmail("");
-      setPassword("");
-      setUsername("");*/
+
     }
     }
     catch (error) {
@@ -81,13 +79,14 @@ const AuthentificationModal = (props) => {
   };
 
   return (
+    <ClickOutHandler onClickOut={handleClickout}>
+
     <div
       className={
-        "w-screen h-screen fixed top-0 left-0 z-20 flex " + visibleModal
+        "w-screen h-screen fixed top-0 left-0 z-30 flex " + visibleModal
       }
       style={{ backgroundColor: "rgba(0,0,0,0.8" }}
     >
-      <ClickOutHandler onClickOut={handleClickout}>
         <div
           className="w-3/4 sm:w-1/2 md:w-1/4 border border-gray-700 bg-reddit_dark p-5 
       text-reddit_text mx-auto self-center rounded-md"
@@ -164,8 +163,9 @@ const AuthentificationModal = (props) => {
             </div>
           )}
         </div>
-      </ClickOutHandler>
     </div>
+    </ClickOutHandler>
+
   );
 };
 

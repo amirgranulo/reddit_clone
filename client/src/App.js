@@ -1,7 +1,6 @@
 import "./style.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { createBrowserHistory } from "history";
 import Header from "./Header.js";
 import AuthentificationModal from "./AuthentificationModal";
 import AuthModalContext from "./context/AuthModalContext";
@@ -9,13 +8,14 @@ import UserContext from "./context/UserContext";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
 import SubReddit from "./SubReddit";
 import PostPage from "./PostPage";
+import PostFormModal from "./PostFormModal";
+import NewPostModalContext from "./context/NewPostModalContext";
 
-// DOSO DO 46, PROBLEM : PROMJENI SE URL ALI NE I STRANICA ( TEK NAKON REFRESHA)
 function App() {
-  const newHistory = createBrowserHistory();
   const [user, setUser] = useState({});
   const [showAuthentificationModal, setShowAuthentificationModal] =
     useState(false);
+  const [showNewPostModal,setShowNewPostModal] = useState(false);
   useEffect(() => {
     const fetchUser = async () => {
       const response = await axios.get("http://localhost:5000/user", {
@@ -43,6 +43,12 @@ function App() {
       }}
     >
       <UserContext.Provider value={{ ...user, setUser, logout }}>
+        <NewPostModalContext.Provider value={{
+          visible : showNewPostModal,
+          setVisible : setShowNewPostModal
+        }}>
+
+       
         <BrowserRouter>
           <Header />
 
@@ -52,6 +58,8 @@ function App() {
           </Switch>
         </BrowserRouter>
         <AuthentificationModal />
+        <PostFormModal/>
+        </NewPostModalContext.Provider>
       </UserContext.Provider>
     </AuthModalContext.Provider>
   );

@@ -6,7 +6,7 @@ const Button = (props) => {
     classNames += "text-gray-300 bg-reddit_dark_bright";
   }
   else {
-    classNames += "bg-gray-300 text-reddit_dark";
+    classNames += " text-reddit_dark bg-gray-300";
   }
   return (
     <button {...props} className={classNames}>

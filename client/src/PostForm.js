@@ -1,7 +1,15 @@
 import Avatar from "./reddit_avatar.png";
-
-
+import { useContext } from "react";
+import NewPostModalContext from "./context/NewPostModalContext";
 const PostForm = () => {
+
+  const modalContext = useContext(NewPostModalContext);
+
+  const showModal = (event) => {
+    event.preventDefault();
+    modalContext.setVisible(true);
+  } 
+
   return (
     <div className="bg-reddit_dark px-6 py-4 text-gray-400">
       <div className="border border-reddit_dark p-2 rounded-md flex">
@@ -13,6 +21,7 @@ const PostForm = () => {
             type="text"
             className="bg-reddit_dark-bright border-reddit_dark-bright p-2 block rounded-md dflex-grow"
             placeholder="New post"
+            onFocus={showModal}
           ></input>
         </form>
       </div>
