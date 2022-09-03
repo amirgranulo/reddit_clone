@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useContext } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import NewPostModalContext from "./context/NewPostModalContext";
 import AuthModalContext from "./context/AuthModalContext";
@@ -7,28 +8,31 @@ import ClickOutHandler from "react-clickout-handler";
 import UserInput from "./UI/UserInput";
 import TextArea from "./UI/TextArea";
 import Button from "./UI/Button";
-
 const PostFormModal = () => {
   const handleClickout = () => {};
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  
+  const [postId,setPostId] = useState(null);
 
  const createPost = async () => {
     const requestBody = {title,body}
     try {
     const response = await axios.post("http://localhost:5000/posts", requestBody, {withCredentials: true });
+    setTitle("");
+    setBody("");
+    modalContext.setVisible(false);
+    setPostId(response.data._id);
     
     }
     catch(error) {
         console.log(error.response);
         if (error.response.status === 401) {
-            authentificationModalContext.setVisible(true);
+            authentificationModalContext.setVisible("login");
         }
     }
 
  }
- 
+
   const modalContext = useContext(NewPostModalContext);
   const visibleModal = modalContext.visible ? "block" : "hidden";
 
@@ -47,6 +51,11 @@ const PostFormModal = () => {
     modalContext.setVisible(false);
   }
  
+   
+  if (postId) {
+    return (<Redirect to={"/posts/"+postId}></Redirect>);
+  }
+
   return (
     <div
       className={

@@ -107,7 +107,7 @@ app.post("/logout", (req, res) => {
 
 app.get("/posts", async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find({postId : null}).sort({postedAt : -1});
     return res.json(posts);
   } catch (error) {
     console.log(error);
@@ -116,11 +116,17 @@ app.get("/posts", async (req, res) => {
 });
 
 app.post("/posts", async (req, res) => {
-  try {
-    const user = await getUserFromToken(req.cookies.token);
+  const token = req.cookies.token;
+  if (!token) {
+    return res.sendStatus(401);
+  }
 
-    const { title, body } = req.body;
-    const post = new Post({ title: title,body: body, author: user.username, postedAt : });
+  try {
+    const user = await getUserFromToken(token);
+
+    const { title, body ,commentParentId, postId} = req.body;
+    const post = new Post({ title: title,body: body, author: user.username,
+       postedAt : new Date(),commentParentId : commentParentId, postId : postId });
     const savedPost = await post.save();
     return res.json(savedPost);
   } catch (error) {
@@ -133,5 +139,10 @@ app.get("/posts/:id", async (req, res) => {
   const post = await Post.findById(req.params.id);
   res.json(post);
 });
+
+app.get("/comments/root/:id", async (req,res) => {
+  const post = await Post.find({postId : req.params.id});
+  res.json(post);
+})
 
 app.listen(5000);

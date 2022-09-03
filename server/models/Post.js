@@ -7,6 +7,8 @@ const Post = mongoose.model(
     title: { type: String, required: false },
     body: { type: String, required: true },
     postedAt: { type: Date, required: true },
+    commentParentId : {type: mongoose.ObjectId, required: false},
+    postId : {type : mongoose.ObjectId, required : false}
   })
 );
 

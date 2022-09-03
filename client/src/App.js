@@ -54,11 +54,12 @@ function App() {
 
           <Switch>
             <Route exact path="/" component={SubReddit}></Route>
-            <Route exact path="/comments/:id" component={PostPage}></Route>
+            <Route exact path="/posts/:id" component={PostPage}></Route>
           </Switch>
-        </BrowserRouter>
         <AuthentificationModal />
         <PostFormModal/>
+        </BrowserRouter>
+
         </NewPostModalContext.Provider>
       </UserContext.Provider>
     </AuthModalContext.Provider>

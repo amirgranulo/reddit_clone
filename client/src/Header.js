@@ -30,7 +30,6 @@ const Header = () => {
 
   const handleClickout = () => {
     setUserDropdownVisibility("hidden");
-    authModalContext.setVisible(false)
   };
   const authModalContext = useContext(AuthModalContext);
   const userContext = useContext(UserContext);
@@ -137,7 +136,6 @@ const Header = () => {
         </div>
       </ClickOutHandler>
       </div>
-
     </header>
   );
 };
