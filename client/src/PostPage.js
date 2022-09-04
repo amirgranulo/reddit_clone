@@ -32,7 +32,7 @@ const PostPage = (props) => {
         <hr className="border-reddit-dark_bright m-5 mt-0" ></hr>
         <RootCommentContext.Provider value={{refreshComments: refreshComments }}>
 
-        <Comments  commentParentId={post._id} comments={comments}/> 
+        <Comments  commentParentId={post._id} postId={post._id} comments={comments}/> 
         </RootCommentContext.Provider>
 
         </>}
