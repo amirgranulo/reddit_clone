@@ -8,9 +8,12 @@ import jwt from "jsonwebtoken";
 
 import User from "./models/User.js";
 import Post from "./models/Post.js";
+import voting from "./voting.js"
 
 const secret = "secret";
 const app = express();
+import {getUserFromToken} from "./utils/UserUtils.js"
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -20,6 +23,9 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(voting);
+
 const connectToDb = async () => {
   await mongoose.connect("mongodb://localhost:27017/reddit", {
     useNewUrlParser: true,
@@ -32,15 +38,6 @@ const db = mongoose.connection;
 
 db.on("error", console.log);
 
-const getUserFromToken = async (token) => {
-  const userFromToken = jwt.verify(token, secret);
-  try {
-    const user = await User.findById(userFromToken.id);
-    return user;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 app.get("/", (req, res) => {
   res.send("ok");
@@ -141,8 +138,10 @@ app.get("/posts/:id", async (req, res) => {
 });
 
 app.get("/comments/root/:id", async (req,res) => {
-  const post = await Post.find({postId : req.params.id});
+  const post = await Post.find({postId : req.params.id}).sort({postedAt : -1});
   res.json(post);
 })
+
+
 
 app.listen(5000);

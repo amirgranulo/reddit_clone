@@ -1,8 +1,14 @@
 import { useState, useContext } from "react";
-import Button from "./UI/Button";
+
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
+
 import timeSince from "./utils/timeSince";
+
+import Button from "./UI/Button";
 import CommentForm from "./CommentForm";
 import RootCommentContext from "./context/RootCommentContext";
+import Vote from "./Vote";
 const Comments = (props) => {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const comments = props.comments.filter(
@@ -26,7 +32,8 @@ const Comments = (props) => {
               </div>
             </div>
             <div className="text-lg border-l-2  border-reddit_text-darker p-3 ml-5 mb-2 pb-0 pl-5">
-              <p className="pl-2">{comment.body}</p>
+              <ReactMarkdown className="pl-2" remarkPlugins={[gfm]} children={comment.body}></ReactMarkdown>
+              <Vote id={comment._id}/>
               <Button 
                   onClick={() => {
                     setShowCommentForm(comment._id);

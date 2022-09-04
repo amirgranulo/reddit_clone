@@ -9,20 +9,43 @@ const PostPage = (props) => {
     const [post,setPost] = useState({});
     const postId = props.match.params.id;
     const [comments,setComments] = useState([]);  
-
+    const [votes,setVotes] = useState([]);
+    const [userVotes,setUserVotes] = useState({});
     const refreshComments = async () => {
         const response = await axios.get("http://localhost:5000/comments/root/" + postId)
         setComments(response.data)
     }   
+    const refreshVotes = async () => {
+        const commentsIds = [post._id, ...comments.map(comment => comment._id)];
+        console.log("postId" + post._id)
+        const response = await axios.post("http://localhost:5000/vote/count", {commentsIds}, {withCredentials : true})
+        console.log("VOTES" + response.data);
+        setVotes(response.data.commentsTotals);
+        setUserVotes(response.data.userVotes);
+    }
+
+
     useEffect(() => {
         const fetchPost = async () => {
             const response = await axios.get("http://localhost:5000/posts/" + postId)
             setPost(response.data)
         }
-  
-        fetchPost();
+        
+        if (props.comment) {
+            setPost(props.comment);
+        }
+        else {
+            fetchPost();
+        }
         refreshComments();
+        
+        
     },[postId])
+
+    useEffect(() => {
+        refreshVotes();
+    }, [comments.length])
+
     // !! cast u boolean tip
     return <div>
         {post  && <Post {...post}/>}
@@ -30,7 +53,7 @@ const PostPage = (props) => {
         <hr className="border-reddit-dark_bright m-5 mt-0"></hr>
         <CommentForm onSubmit={refreshComments} showAuthor={true} postId={post._id} commentParentId={post._id} />
         <hr className="border-reddit-dark_bright m-5 mt-0" ></hr>
-        <RootCommentContext.Provider value={{refreshComments: refreshComments }}>
+        <RootCommentContext.Provider value={{refreshComments: refreshComments,refreshVotes : refreshVotes, votes : votes, userVotes :userVotes }}>
 
         <Comments  commentParentId={post._id} postId={post._id} comments={comments}/> 
         </RootCommentContext.Provider>
