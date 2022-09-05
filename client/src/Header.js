@@ -17,6 +17,7 @@ import {
 import Button from "./UI/Button";
 import UserContext from "./context/UserContext";
 import { Link } from "react-router-dom";
+import RedirectContext from "./context/RedirectContext";
 const Header = () => {
   const [userDropdownVisibility, setUserDropdownVisibility] =
     useState("hidden");
@@ -28,11 +29,18 @@ const Header = () => {
     }
   };
 
+  const [searchInput,setSearchInput] = useState("");
+  const handleSearchInputOnChange = (event) => {
+    setSearchInput(event.target.value);
+  }
+
   const handleClickout = () => {
     setUserDropdownVisibility("hidden");
   };
   const authModalContext = useContext(AuthModalContext);
   const userContext = useContext(UserContext);
+  const redirectContext = useContext(RedirectContext);
+
   const handleLoginButtonClick = () => {
     authModalContext.setVisible("login");
   };
@@ -41,6 +49,11 @@ const Header = () => {
   };
   const handleLogoutButtonClick = () => {
     userContext.logout();
+  }
+
+  const search = (event) => {
+    event.preventDefault();
+    redirectContext.setRedirect('/search/'+ encodeURIComponent(searchInput));
   }
 
   return (
@@ -52,7 +65,7 @@ const Header = () => {
         </Link>
 
         <form
-          action=""
+          onSubmit={search}
           className=" p-1 px-4 flex rounded-md border-gray-600 bg-reddit_dark-bright mx-4 flex-grow"
         >
           <SearchIcon className="text-gray-500 h-7 w-7 mt-2" />
@@ -60,6 +73,8 @@ const Header = () => {
             type="text"
             className="bg-reddit_dark-bright h-6 m-2 text-sm p-1 pl-2 pr-0 block focus:outline-none text-white"
             placeholder="Search"
+            value={searchInput}
+            onChange={handleSearchInputOnChange}
           ></input>
         </form>
 

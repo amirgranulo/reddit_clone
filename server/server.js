@@ -103,8 +103,10 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/posts", async (req, res) => {
+  const query = req.query.search;
+  const searchFilter = query ? {body : {$regex : '.*'+ query+'.*'}} : {rootId : null};
   try {
-    const posts = await Post.find({postId : null}).sort({postedAt : -1});
+    const posts = await Post.find(searchFilter).sort({postedAt : -1});
     return res.json(posts);
   } catch (error) {
     console.log(error);
@@ -141,7 +143,5 @@ app.get("/comments/root/:id", async (req,res) => {
   const post = await Post.find({postId : req.params.id}).sort({postedAt : -1});
   res.json(post);
 })
-
-
 
 app.listen(5000);

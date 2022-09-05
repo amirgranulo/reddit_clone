@@ -7,7 +7,7 @@ import gfm from "remark-gfm";
 const Post = (props) => {
   return (
     <div className=" px-5 text-reddit_text mt-6  ">
-      <Link to={"/posts/" + props._id} className="bg-reddit_dark-bright block border border-black hover:border-reddit_text text-reddit_text  mt-6 cursor-pointer">
+      <Link to={"/posts/" + (props.postId || props._id)} className="bg-reddit_dark-bright block border border-black hover:border-reddit_text text-reddit_text  mt-6 cursor-pointer">
         <h4 className="text-reddit_text-darker mb-1 pl-2">
           Posted by {props.author} {timeSince(props.postedAt) }
         </h4>
