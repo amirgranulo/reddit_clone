@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import AuthModalContext from "./context/AuthModalContext";
+import NewPostModalContext from "./context/NewPostModalContext";
 import Logo from "./logo.png";
 import Avatar from "./reddit_avatar.png";
 import ClickOutHandler from "react-clickout-handler";
@@ -21,6 +22,10 @@ import RedirectContext from "./context/RedirectContext";
 const Header = () => {
   const [userDropdownVisibility, setUserDropdownVisibility] =
     useState("hidden");
+  const [
+    PlusDropdownVisibility,
+    setPlusDropdownVisibility,
+  ] = useState("hidden");
   const handleUserDropdown = () => {
     if (userDropdownVisibility === "hidden") {
       setUserDropdownVisibility("block");
@@ -29,13 +34,19 @@ const Header = () => {
     }
   };
 
-  const [searchInput,setSearchInput] = useState("");
+  const newPostContext = useContext(NewPostModalContext);
+  
+  const [searchInput, setSearchInput] = useState("");
   const handleSearchInputOnChange = (event) => {
     setSearchInput(event.target.value);
-  }
+  };
 
   const handleClickout = () => {
     setUserDropdownVisibility("hidden");
+  };
+
+  const handlePlusButtonClickout = () => {
+    setPlusDropdownVisibility("hidden");
   };
   const authModalContext = useContext(AuthModalContext);
   const userContext = useContext(UserContext);
@@ -49,19 +60,25 @@ const Header = () => {
   };
   const handleLogoutButtonClick = () => {
     userContext.logout();
-  }
+  };
 
+  const handlePlusButtonClick = () => {
+    setPlusDropdownVisibility("block");
+  };
+  const handleNewPostButtonClick = () => {
+    setPlusDropdownVisibility("hidden");
+    newPostContext.setVisible("true");
+  }
   const search = (event) => {
     event.preventDefault();
-    redirectContext.setRedirect('/search/'+ encodeURIComponent(searchInput));
-  }
-
+    redirectContext.setRedirect("/search/" + encodeURIComponent(searchInput));
+  };
+ /// DOSO DO 18:00 
   return (
     <header className="w-full bg-reddit_dark p-2">
       <div className="mx-4 flex">
         <Link to="/">
-
-        <img src={Logo} alt="Reddit logo" className="w-8 h-8 mr-4 mt-2"></img>
+          <img src={Logo} alt="Reddit logo" className="w-8 h-8 mr-4 mt-2"></img>
         </Link>
 
         <form
@@ -86,9 +103,37 @@ const Header = () => {
             <button className="px-3 py-1">
               <BellIcon className="text-white w-8 h-8 m-1 mx-2" />
             </button>
-            <button className="px-3 py-1">
-              <PlusIcon className="text-white w-8 h-8 m-1 mx-2" />
-            </button>
+            <ClickOutHandler onClickOut={handlePlusButtonClickout} >
+              <button
+                onClick={handlePlusButtonClick}
+                className="px-3 py-1"
+              >
+                <PlusIcon className="text-white w-8 h-8 m-1 mx-2" />
+              </button>
+              <div
+                className={
+                  "absolute text-center right-15 top-16 bg-reddit_dark border border-gray-700 z-5 rounded-md text-reddit_text overflow-hidden " +
+                  PlusDropdownVisibility
+                }
+              >
+                <button
+                  onClick={handleNewPostButtonClick}
+                  href=""
+                  className="block flex w-50 py-2 px-3 hover:bg-gray-300 hover:text-black "
+                >
+                  <PlusIcon className="w-6 h-5 mr-2" />
+                  Create post
+                </button>
+                <button
+                  onClick={handleLoginButtonClick}
+                  href=""
+                  className="block flex w-50 py-2 px-2 hover:bg-gray-300 hover:text-black "
+                >
+                  <PlusIcon className="w-6 h-5 mr-2" />
+                  Create subreddit
+                </button>
+              </div>
+            </ClickOutHandler>
           </>
         )}
         {!userContext.username && (
@@ -105,51 +150,59 @@ const Header = () => {
             </Button>
           </div>
         )}
-          <ClickOutHandler onClickOut={handleClickout}>
+        <ClickOutHandler onClickOut={handleClickout}>
+          <button
+            className="rounded-md flex ml-4 mt-1 border border-gray-700"
+            onClick={handleUserDropdown}
+          >
+            {!userContext.username && (
+              <UserIcon className="w-8 h-8 mt-1 text-gray-300"></UserIcon>
+            )}
 
-        <button
-          className="rounded-md flex ml-4 mt-1 border border-gray-700"
-          onClick={handleUserDropdown}
-        >
-          {!userContext.username && (
-            <UserIcon className="w-8 h-8 mt-1 text-gray-300"></UserIcon>
-          )}
+            {userContext.username && (
+              <div className="bg-reddit_dark-bright rounded-md">
+                <img
+                  src={Avatar}
+                  alt="Reddit avatar"
+                  className="block w-8 h-8"
+                />{" "}
+              </div>
+            )}
 
-          {userContext.username && (
-            <div className="bg-reddit_dark-bright rounded-md">
-              <img src={Avatar} alt="Reddit avatar" className="block w-8 h-8" />{" "}
-            </div>
-          )}
-
-          <ChevronDownIcon className="text-gray-500 w-6 h-6 mt-1 m-1" />
-        </button>
-        <div
-          className={
-            "absolute text-center right-5 top-16 bg-reddit_dark border border-gray-700 z-5 rounded-md text-reddit_text overflow-hidden " +
-            userDropdownVisibility
-          }
-        >
-          {userContext.username && <span className="block w-50 py-2 px-3 text-sm">{userContext.username}</span>}
-          {!userContext.username ? (
-            <button
-              onClick={handleLoginButtonClick}
-              href=""
-              className="block flex w-50 py-2 px-3 hover:bg-gray-300 hover:text-black "
-            >
-              <LoginIcon className="w-6 h-5 mr-2" />
-              Login / Register
-            </button>
-          ) :    <button
-          onClick={handleLogoutButtonClick}
-          href=""
-          className="block flex w-50 py-2 px-3 hover:bg-gray-300 hover:text-black text-sm"
-        >
-          <LogoutIcon className="w-6 h-5 mr-2" />
-          Log out
-        </button>}
-
-        </div>
-      </ClickOutHandler>
+            <ChevronDownIcon className="text-gray-500 w-6 h-6 mt-1 m-1" />
+          </button>
+          <div
+            className={
+              "absolute text-center right-5 top-16 bg-reddit_dark border border-gray-700 z-5 rounded-md text-reddit_text overflow-hidden " +
+              userDropdownVisibility
+            }
+          >
+            {userContext.username && (
+              <span className="block w-50 py-2 px-3 text-sm">
+                {userContext.username}
+              </span>
+            )}
+            {!userContext.username ? (
+              <button
+                onClick={handleLoginButtonClick}
+                href=""
+                className="block flex w-50 py-2 px-3 hover:bg-gray-300 hover:text-black "
+              >
+                <LoginIcon className="w-6 h-5 mr-2" />
+                Login / Register
+              </button>
+            ) : (
+              <button
+                onClick={handleLogoutButtonClick}
+                href=""
+                className="block flex w-50 py-2 px-3 hover:bg-gray-300 hover:text-black text-sm"
+              >
+                <LogoutIcon className="w-6 h-5 mr-2" />
+                Log out
+              </button>
+            )}
+          </div>
+        </ClickOutHandler>
       </div>
     </header>
   );
