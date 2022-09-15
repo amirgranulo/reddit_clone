@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import AuthModalContext from "./context/AuthModalContext";
 import NewPostModalContext from "./context/NewPostModalContext";
+import SubredditContext from "./context/SubredditContext";
 import Logo from "./logo.png";
 import Avatar from "./reddit_avatar.png";
 import ClickOutHandler from "react-clickout-handler";
@@ -35,8 +36,9 @@ const Header = () => {
   };
 
   const newPostContext = useContext(NewPostModalContext);
-  
+  const newSubredditContext = useContext(SubredditContext)
   const [searchInput, setSearchInput] = useState("");
+
   const handleSearchInputOnChange = (event) => {
     setSearchInput(event.target.value);
   };
@@ -69,11 +71,16 @@ const Header = () => {
     setPlusDropdownVisibility("hidden");
     newPostContext.setVisible("true");
   }
+  const handleNewSubredditButtonClick = () => {
+    setPlusDropdownVisibility("hidden");
+    newSubredditContext.setVisible("true");
+  }
+
   const search = (event) => {
     event.preventDefault();
     redirectContext.setRedirect("/search/" + encodeURIComponent(searchInput));
   };
- /// DOSO DO 18:00 
+ 
   return (
     <header className="w-full bg-reddit_dark p-2">
       <div className="mx-4 flex">
@@ -125,7 +132,7 @@ const Header = () => {
                   Create post
                 </button>
                 <button
-                  onClick={handleLoginButtonClick}
+                  onClick={handleNewSubredditButtonClick}
                   href=""
                   className="block flex w-50 py-2 px-2 hover:bg-gray-300 hover:text-black "
                 >

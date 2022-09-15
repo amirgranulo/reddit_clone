@@ -12,8 +12,11 @@ import PostFormModal from "./PostFormModal";
 import NewPostModalContext from "./context/NewPostModalContext";
 import RedirectContext from "./context/RedirectContext";
 import SearchResults from "./SearchResults";
+import { SubredditContextProvider } from "./context/SubredditContext";
+import SubRedditFormModal from "./SubredditFormModal";
 
 function App() {
+  axios.defaults.baseURL = "http://localhost:5000";
   const [user, setUser] = useState({});
   const [showAuthentificationModal, setShowAuthentificationModal] =
     useState(false);
@@ -42,7 +45,7 @@ function App() {
     if (redirect) {
       setRedirect(false);
     }
-  },[redirect])
+  }, [redirect]);
 
   return (
     <AuthModalContext.Provider
@@ -51,28 +54,37 @@ function App() {
         setVisible: setShowAuthentificationModal,
       }}
     >
-      <UserContext.Provider value={{ ...user, setUser, logout }}>
-        <NewPostModalContext.Provider
-          value={{
-            visible: showNewPostModal,
-            setVisible: setShowNewPostModal,
-          }}
-        >
-          <RedirectContext.Provider value={{ redirect, setRedirect }}>
-            <BrowserRouter>
-              <Header />
-              {redirect && <Redirect to={redirect}></Redirect>}
-              <Switch>
-                <Route exact path="/" component={SubReddit}></Route>
-                <Route exact path="/posts/:id" component={PostPage}></Route>
-                <Route exact path="/search/:query" component={SearchResults}></Route>
-              </Switch>
-              <AuthentificationModal />
-              <PostFormModal />
-            </BrowserRouter>
-          </RedirectContext.Provider>
-        </NewPostModalContext.Provider>
-      </UserContext.Provider>
+      <SubredditContextProvider>
+        <UserContext.Provider value={{ ...user, setUser, logout }}>
+          <NewPostModalContext.Provider
+            value={{
+              visible: showNewPostModal,
+              setVisible: setShowNewPostModal,
+            }}
+          >
+            <RedirectContext.Provider value={{ redirect, setRedirect }}>
+              <BrowserRouter>
+                <Header />
+                {redirect && <Redirect to={redirect}></Redirect>}
+                <Switch>
+                  <Route exact path="/" component={SubReddit}></Route>
+                  <Route exact path="/r/:subreddit" component={SubReddit}></Route>
+
+                  <Route exact path="/posts/:id" component={PostPage}></Route>
+                  <Route
+                    exact
+                    path="/search/:query"
+                    component={SearchResults}
+                  ></Route>
+                </Switch>
+                <AuthentificationModal />
+                <PostFormModal />
+                <SubRedditFormModal/>
+              </BrowserRouter>
+            </RedirectContext.Provider>
+          </NewPostModalContext.Provider>
+        </UserContext.Provider>
+      </SubredditContextProvider>
     </AuthModalContext.Provider>
   );
 }

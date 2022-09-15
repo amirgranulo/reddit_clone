@@ -9,7 +9,10 @@ import UserInput from "./UI/UserInput";
 import TextArea from "./UI/TextArea";
 import Button from "./UI/Button";
 const PostFormModal = () => {
-  const handleClickout = () => {};
+  const handleClickout = () => {
+    modalContext.setVisible(false);
+
+  };
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [postId,setPostId] = useState(null);

@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
 import voting from "./voting.js"
-
+import subreddits from "./subreddits.js";
 const secret = "secret";
 const app = express();
 import {getUserFromToken} from "./utils/UserUtils.js"
@@ -25,7 +25,7 @@ app.use(
 );
 
 app.use(voting);
-
+app.use(subreddits);
 const connectToDb = async () => {
   await mongoose.connect("mongodb://localhost:27017/reddit", {
     useNewUrlParser: true,
