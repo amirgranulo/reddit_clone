@@ -56,7 +56,7 @@ const PostPage = (props) => {
   // !! cast u boolean tip
   return (
     <div>
-      {post && <Post {...post} />}
+      {post && <Post {...post} postId={postId} />}
       {!!post && !!post._id && (
         <>
           <hr className="border-reddit-dark_bright m-5 mt-0"></hr>

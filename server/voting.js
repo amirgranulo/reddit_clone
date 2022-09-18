@@ -27,7 +27,8 @@ router.get('/vote/:id/:type', async (req,res) => {
 router.post('/vote/count', async (req,res) => {
     const {commentsIds} = req.body;
     try {
-    const user = await getUserFromToken(req.cookies.token);
+     const user = await getUserFromToken(req.cookies.token);
+  
     let userVotes = {};
 
     const result = await Vote.find({postId : {'$in' : commentsIds}});

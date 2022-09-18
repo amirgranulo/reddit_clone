@@ -1,15 +1,18 @@
 import axios from "axios";
 import { useContext } from "react";
 import RootCommentContext from "./context/RootCommentContext";
+import UserContext from "./context/UserContext";
 const Vote = (props) => {
   const context = useContext(RootCommentContext);
+  const userContext = useContext(UserContext);
   const vote = async (voteType) => {
     const voteTypeNumber = voteType === "UP" ? 1 : -1;
     if (voteTypeNumber === userVote) {
       voteType = "undo";
     } 
     const url = "http://localhost:5000/vote/" + props.id + "/" + voteType;
-    const response = await axios.get(url, { withCredentials: true });
+    const response = await axios.get(url, { withCredentials: userContext.username ? true : false });
+    console.log("VOTE RESPONSE : "+ response)
     context.refreshVotes();
   };
   const handleUpVote = () => {
@@ -83,7 +86,7 @@ const Vote = (props) => {
   return (
     <div className={"inline-block ml-1.5"}>
       {arrowButton("UP")}
-      <div className={"inline-block mx-1"}>{totalUpvotes}</div>
+      <div className={"inline-block mx-1 text-white"}>{totalUpvotes}</div>
       {arrowButton("DOWN")}
     </div>
   );
