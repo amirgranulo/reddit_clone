@@ -8,7 +8,8 @@ const Post = mongoose.model(
     body: { type: String, required: true },
     postedAt: { type: Date, required: true },
     commentParentId : {type: mongoose.ObjectId, required: false},
-    postId : {type : mongoose.ObjectId, required : false}
+    postId : {type : mongoose.ObjectId, required : false},
+    subreddit : {type: String, required: true}
   })
 );
 

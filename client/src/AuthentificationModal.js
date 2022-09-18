@@ -18,13 +18,12 @@ const AuthentificationModal = (props) => {
   const setModalTypeToLogin = () => {
     authModalContext.setVisible("login");
   };
-  // Zajebava clickout na modale kao login...
   const modalTitleText = modalType === "login" ? "Login" : "Register";
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [wrongCredentials,setWrongCredentials] = useState();
   const authModalContext = useContext(AuthModalContext);
   const visibleModal = authModalContext.visible !== false ? "block" : "hidden";
   if (authModalContext.visible && authModalContext.visible !== modalType) {
@@ -68,8 +67,11 @@ const AuthentificationModal = (props) => {
       if (response.status === 200) {
         userContext.setUser({ username });
         authModalContext.setVisible(false);
+        setWrongCredentials();
       }
-    } catch (error) {}
+    } catch (error) {
+      setWrongCredentials("Wrong username or password.");
+    }
   };
 
   const handleClickout = () => {
@@ -119,6 +121,7 @@ const AuthentificationModal = (props) => {
               className="mb-2 w-full"
             />
           </label>
+          {wrongCredentials && <h2 className="text-center text-white-600">{wrongCredentials}</h2>}
 
           {modalType === "register" && (
             <Button

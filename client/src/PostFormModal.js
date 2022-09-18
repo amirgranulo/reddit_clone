@@ -8,6 +8,7 @@ import ClickOutHandler from "react-clickout-handler";
 import UserInput from "./UI/UserInput";
 import TextArea from "./UI/TextArea";
 import Button from "./UI/Button";
+import SubredditContext from "./context/SubredditContext";
 const PostFormModal = () => {
   const handleClickout = () => {
     modalContext.setVisible(false);
@@ -16,11 +17,13 @@ const PostFormModal = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [postId,setPostId] = useState(null);
+  const subredditContext = useContext(SubredditContext);
+  const subreddit = subredditContext.subredditInfo.title;
 
  const createPost = async () => {
-    const requestBody = {title,body}
+    const requestBody = {title,body,subreddit}
     try {
-    const response = await axios.post("http://localhost:5000/posts", requestBody, {withCredentials: true });
+    const response = await axios.post("/posts", requestBody, {withCredentials: true });
     setTitle("");
     setBody("");
     modalContext.setVisible(false);
@@ -41,6 +44,7 @@ const PostFormModal = () => {
 
   const authentificationModalContext = useContext(AuthModalContext);
 
+  
 
   const handleTitleOnChange = (event) => {
     setTitle(event.target.value);
@@ -56,7 +60,7 @@ const PostFormModal = () => {
  
    
   if (postId) {
-    return (<Redirect to={"/posts/"+postId}></Redirect>);
+    return (<Redirect to={"/posts/"+subreddit+"/"+postId}></Redirect>);
   }
 
   return (

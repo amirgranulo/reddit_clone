@@ -8,11 +8,12 @@ import jwt from "jsonwebtoken";
 
 import User from "./models/User.js";
 import Post from "./models/Post.js";
-import voting from "./voting.js"
+import voting from "./voting.js";
 import subreddits from "./subreddits.js";
 const secret = "secret";
 const app = express();
-import {getUserFromToken} from "./utils/UserUtils.js"
+import { getUserFromToken } from "./utils/UserUtils.js";
+import Subreddit from "./models/Subreddit.js";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -37,7 +38,6 @@ connectToDb();
 const db = mongoose.connection;
 
 db.on("error", console.log);
-
 
 app.get("/", (req, res) => {
   res.send("ok");
@@ -104,16 +104,41 @@ app.post("/logout", (req, res) => {
 
 app.get("/posts", async (req, res) => {
   const query = req.query.search;
-  const searchFilter = query ? {body : {$regex : '.*'+ query+'.*'}} : {rootId : null};
+  const subreddit = req.query.subreddit;
+  let searchFilter = query
+    ? { body: { $regex: ".*" + query + ".*" } }
+    : { rootId: null };
+  if (subreddit) {
+    searchFilter.subreddit = subreddit;
+  }
   try {
-    const posts = await Post.find(searchFilter).sort({postedAt : -1});
+    const posts = await Post.find(searchFilter).sort({ postedAt: -1 });
     return res.json(posts);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
   }
 });
+app.get("/search", async (req, res) => {
+  const query = req.query.query;
+  let postsSearchFilter = {
+    $or: [
+      { body: { $regex: ".*" + query + ".*" } },
+      { title: { $regex: ".*" + query + ".*" } },
+    ],
+  };
+  let subredditsSearchFilter = { title: { $regex: ".*" + query + ".*" } };
+  try {
+    const posts = await Post.find(postsSearchFilter).sort({ postedAt: -1 });
 
+    const subreddits = await Subreddit.find(subredditsSearchFilter);
+    console.info(subreddits);
+    return res.json({ posts, subreddits });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
 app.post("/posts", async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
@@ -123,10 +148,18 @@ app.post("/posts", async (req, res) => {
   try {
     const user = await getUserFromToken(token);
 
-    const { title, body ,commentParentId, postId} = req.body;
-    const post = new Post({ title: title,body: body, author: user.username,
-       postedAt : new Date(),commentParentId : commentParentId, postId : postId });
+    const { title, body, commentParentId, postId, subreddit } = req.body;
+    const post = new Post({
+      title: title,
+      body: body,
+      author: user.username,
+      postedAt: new Date(),
+      commentParentId: commentParentId,
+      postId: postId,
+      subreddit: subreddit,
+    });
     const savedPost = await post.save();
+    console.info("saved post : " + savedPost);
     return res.json(savedPost);
   } catch (error) {
     console.log(error);
@@ -139,9 +172,11 @@ app.get("/posts/:id", async (req, res) => {
   res.json(post);
 });
 
-app.get("/comments/root/:id", async (req,res) => {
-  const post = await Post.find({postId : req.params.id}).sort({postedAt : -1});
+app.get("/comments/root/:id", async (req, res) => {
+  const post = await Post.find({ postId: req.params.id }).sort({
+    postedAt: -1,
+  });
   res.json(post);
-})
+});
 
 app.listen(5000);

@@ -17,7 +17,7 @@ const SubReddit = () => {
   },[subreddit])
   return <>
     <SubRedditHeader />
-    <PostForm />
+    {subreddit && <PostForm />}
     <PostsList></PostsList>
   </>;
 };

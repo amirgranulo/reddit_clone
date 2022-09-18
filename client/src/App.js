@@ -70,7 +70,7 @@ function App() {
                   <Route exact path="/" component={SubReddit}></Route>
                   <Route exact path="/r/:subreddit" component={SubReddit}></Route>
 
-                  <Route exact path="/posts/:id" component={PostPage}></Route>
+                  <Route exact path="/posts/:subreddit/:id" component={PostPage}></Route>
                   <Route
                     exact
                     path="/search/:query"

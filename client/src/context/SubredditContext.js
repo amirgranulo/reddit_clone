@@ -12,6 +12,7 @@ export const SubredditContextProvider = ({children}) => {
     const [subredditInfo,setSubredditInfo] = useState({});
     useEffect(() => {
         if (!title) {
+            setSubredditInfo("");
             return;
           }
         axios.get("/subreddits/"+title).then(response => {

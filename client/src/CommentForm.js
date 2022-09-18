@@ -1,44 +1,70 @@
 import axios from "axios";
-import { useContext ,useState} from "react";
+import { useContext, useState } from "react";
+import SubredditContext from "./context/SubredditContext";
 
 import UserContext from "./context/UserContext";
 import Button from "./UI/Button";
 import TextArea from "./UI/TextArea";
 
-const CommentForm = (props) => {  
-    const user = useContext(UserContext);
-    const [comment,setComment] = useState();
+const CommentForm = (props) => {
+  const user = useContext(UserContext);
+  const [comment, setComment] = useState();
 
-    const handleCommentOnChange = (event) => {
-        setComment(event.target.value);
+  const handleCommentOnChange = (event) => {
+    setComment(event.target.value);
+  };
+  const subredditContext = useContext(SubredditContext);
+  const postComment = async (event) => {
+    event.preventDefault();
+    console.info(window.location.pathname)
+    const url = window.location.pathname
+    const prefix = "/posts/";
+    const subreddit = url.substring(url.indexOf(prefix+prefix.length),url.lastIndexOf("/")).split(prefix)[1].replaceAll("%"," ");
+    const data = {
+      body: comment,
+      commentParentId: props.commentParentId,
+      postId: props.postId,
+      subreddit: subreddit,
+    };
+    const response = await axios.post("http:///localhost:5000/posts", data, {
+      withCredentials: true,
+    });
+    setComment("");
+    if (props.onSubmit) {
+      props.onSubmit();
     }
+  };
 
-    const postComment = async (event) => {
-        event.preventDefault();
-        const data = {body:comment,commentParentId : props.commentParentId,postId : props.postId   }
-        const response = await axios.post('http:///localhost:5000/posts',data,{withCredentials : true })
-        setComment("");
-        if (props.onSubmit) {
-            props.onSubmit();
-        }
-    }
+  return (
+    <div className="flex flex-row justify-left mt-5 mb-2">
+      <div className="text-white px-5 w-1/2">
+        {user.username && props.showAuthor && (
+          <div> Comment as {user.username} </div>
+        )}
+        <form className="w-full" onSubmit={postComment}>
+          <TextArea
+            onChange={handleCommentOnChange}
+            value={comment}
+            className="w-full"
+            placeholder={"Enter your comment.You can use markdown."}
+          />
 
-    return (
-        <div className="flex flex-row justify-left mt-5 mb-2">
-
-    <div className="text-white px-5 w-1/2">
-        {user.username && props.showAuthor && (<div > Comment as  {user.username} </div>)}
-         <form className="w-full" onSubmit={postComment}>
-            <TextArea onChange={handleCommentOnChange} value={comment} className="w-full" placeholder={'Enter your comment.You can use markdown.'}/>
-
-            <div className="text-right"> 
-            {!!props.onCancel && 
-             <Button outline onClick={props.onCancel}className="text-right mt-5 mb-5">Cancel</Button>}
-            <Button className="text-right mt-5 mb-5">Comment</Button></div>
-         </form>
+          <div className="text-right">
+            {!!props.onCancel && (
+              <Button
+                outline
+                onClick={props.onCancel}
+                className="text-right mt-5 mb-5"
+              >
+                Cancel
+              </Button>
+            )}
+            <Button className="text-right mt-5 mb-5">Comment</Button>
+          </div>
+        </form>
+      </div>
     </div>
-    </div>)
-
-}
+  );
+};
 
 export default CommentForm;

@@ -28,7 +28,6 @@ router.post('/subreddits',async (req,res) => {
 router.get('/subreddits/:title',async (req,res) => {
     const title = req.params.title;
     const subreddit = await Subreddit.findOne({title});
-    console.log("???" +subreddit);
     return res.json(subreddit);
 })
 
