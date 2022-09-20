@@ -50,7 +50,9 @@ const PostPage = (props) => {
   }, [postId]);
 
   useEffect(() => {
+    if (userContext.username) {
     refreshVotes();
+    }
   }, [comments.length]);
 
   // !! cast u boolean tip

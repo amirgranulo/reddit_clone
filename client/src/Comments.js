@@ -8,6 +8,7 @@ import timeSince from "./utils/timeSince";
 import Button from "./UI/Button";
 import CommentForm from "./CommentForm";
 import RootCommentContext from "./context/RootCommentContext";
+import UserContext from "./context/UserContext";
 import Vote from "./Vote";
 const Comments = (props) => {
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -15,7 +16,7 @@ const Comments = (props) => {
     (comment) => props.commentParentId === comment.commentParentId
   );
   const rootCommentInfo = useContext(RootCommentContext);
-
+  const userInfo = useContext(UserContext);
   return (
     <div className={"ml-5 mt-2 mb-2"}>
       {comments.map((comment) => {  
@@ -33,7 +34,7 @@ const Comments = (props) => {
             </div>
             <div className="text-lg border-l-2  border-reddit_text-darker p-3 ml-5 mb-2 pb-0 pl-5">
               <ReactMarkdown className="pl-2" remarkPlugins={[gfm]} children={comment.body}></ReactMarkdown>
-              <Vote id={comment._id}/>
+              {userInfo.username && <Vote id={comment._id}/>}
               <Button 
                   onClick={() => {
                     setShowCommentForm(comment._id);

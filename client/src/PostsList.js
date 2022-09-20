@@ -3,8 +3,10 @@ import { useState,useEffect } from "react";
 import Post from "./Post";
 import axios from "axios";
 import SubredditContext from "./context/SubredditContext";
+
 const PostsList = (props) => {
     const [posts,setPosts] = useState([]);
+  
     let url = "http://localhost:5000/posts"; 
     const subredditContext = useContext(SubredditContext);
 
@@ -30,7 +32,6 @@ const PostsList = (props) => {
         posts.map((post) => {
           return <Post subreddit={subredditContext.subredditInfo.title} {...post} />;
         })}
-      <Post />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import RootCommentContext from "./context/RootCommentContext";
 import UserContext from "./context/UserContext";
 const Vote = (props) => {
@@ -12,7 +12,6 @@ const Vote = (props) => {
     } 
     const url = "http://localhost:5000/vote/" + props.id + "/" + voteType;
     const response = await axios.get(url, { withCredentials: userContext.username ? true : false });
-    console.log("VOTE RESPONSE : "+ response)
     context.refreshVotes();
   };
   const handleUpVote = () => {
@@ -22,6 +21,10 @@ const Vote = (props) => {
   const handleDownVote = () => {
     vote("DOWN");
   };
+
+  useEffect(() => {
+     context.refreshVotes();
+  })
   const totalUpvotes = context.votes[props.id] || 0;
   const userVote = context.userVotes[props.id] || null;
 
