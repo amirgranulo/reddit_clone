@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Post from "./Post";
-import CommentForm from "./CommentForm";
-import Comments from "./Comments.js";
-import RootCommentContext from "./context/RootCommentContext";
-import UserContext from "./context/UserContext";
-import AuthModalContext from "./context/AuthModalContext";
+import CommentForm from "../comments/CommentForm";
+import Comments from "../comments/Comments.js";
+import RootCommentContext from "../context/RootCommentContext";
+import UserContext from "../context/UserContext";
+import AuthModalContext from "../context/AuthModalContext";
 const PostPage = (props) => {
   const [post, setPost] = useState({});
   const postId = props.match.params.id;
@@ -33,9 +33,7 @@ const PostPage = (props) => {
   };
 
   useEffect(() => {
-    if (!userContext.username) {
-      authModalContext.setVisible("login");
-    }
+  
     const fetchPost = async () => {
       const response = await axios.get("http://localhost:5000/posts/" + postId);
       setPost(response.data);

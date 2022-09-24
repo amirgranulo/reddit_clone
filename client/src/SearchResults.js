@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Post from "./Post";
+import Post from "./posts/Post";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const SearchResults = (props) => {
   const { query } = props.match.params;
   const [posts, setPosts] = useState([]);
   const [subreddits, setSubreddits] = useState([]);
-  // STAVIT I DA SEARCHA U NASLOVU
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await axios.get("/search?query=" + query, {

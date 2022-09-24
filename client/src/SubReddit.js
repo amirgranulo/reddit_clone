@@ -1,6 +1,6 @@
-import PostsList from "./PostsList";
+import PostsList from "./posts/PostsList";
 import SubRedditHeader from "./SubredditHeader";
-import PostForm from "./PostForm";
+import PostForm from "./posts/PostForm";
 import SubredditContext from "./context/SubredditContext";
 
 import { useParams } from "react-router-dom";

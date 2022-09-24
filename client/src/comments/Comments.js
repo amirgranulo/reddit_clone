@@ -3,13 +3,13 @@ import { useState, useContext } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 
-import timeSince from "./utils/timeSince";
+import timeSince from "../utils/timeSince";
 
-import Button from "./UI/Button";
+import Button from "../UI/Button";
 import CommentForm from "./CommentForm";
-import RootCommentContext from "./context/RootCommentContext";
-import UserContext from "./context/UserContext";
-import Vote from "./Vote";
+import RootCommentContext from "../context/RootCommentContext";
+import UserContext from "../context/UserContext";
+import Vote from "../Vote";
 const Comments = (props) => {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const comments = props.comments.filter(

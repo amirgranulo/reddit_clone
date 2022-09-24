@@ -2,18 +2,18 @@ import "./style.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "./Header.js";
-import AuthentificationModal from "./AuthentificationModal";
+import AuthentificationModal from "./modals/AuthentificationModal";
 import AuthModalContext from "./context/AuthModalContext";
 import UserContext from "./context/UserContext";
 import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 import SubReddit from "./SubReddit";
-import PostPage from "./PostPage";
-import PostFormModal from "./PostFormModal";
+import PostPage from "./posts/PostPage";
+import PostFormModal from "./modals/PostFormModal";
 import NewPostModalContext from "./context/NewPostModalContext";
 import RedirectContext from "./context/RedirectContext";
 import SearchResults from "./SearchResults";
 import { SubredditContextProvider } from "./context/SubredditContext";
-import SubRedditFormModal from "./SubredditFormModal";
+import SubRedditFormModal from "./modals/SubredditFormModal";
 
 function App() {
   axios.defaults.baseURL = "http://localhost:5000";

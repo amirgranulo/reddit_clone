@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import NewPostModalContext from "./context/NewPostModalContext";
-import AuthModalContext from "./context/AuthModalContext";
+import NewPostModalContext from "../context/NewPostModalContext";
+import AuthModalContext from "../context/AuthModalContext";
 import ClickOutHandler from "react-clickout-handler";
-import UserInput from "./UI/UserInput";
-import TextArea from "./UI/TextArea";
-import Button from "./UI/Button";
-import SubredditContext from "./context/SubredditContext";
+import UserInput from "../UI/UserInput";
+import TextArea from "../UI/TextArea";
+import Button from "../UI/Button";
+import SubredditContext from "../context/SubredditContext";
 const PostFormModal = () => {
   const handleClickout = () => {
     modalContext.setVisible(false);

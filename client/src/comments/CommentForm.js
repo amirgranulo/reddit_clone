@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import SubredditContext from "./context/SubredditContext";
-
-import UserContext from "./context/UserContext";
-import Button from "./UI/Button";
-import TextArea from "./UI/TextArea";
+import SubredditContext from "../context/SubredditContext";
+import AuthModalContext from "../context/AuthModalContext";
+import UserContext from "../context/UserContext";
+import Button from "../UI/Button";
+import TextArea from "../UI/TextArea";
 
 const CommentForm = (props) => {
   const user = useContext(UserContext);
@@ -14,7 +14,11 @@ const CommentForm = (props) => {
     setComment(event.target.value);
   };
   const subredditContext = useContext(SubredditContext);
+  const authModalContext = useContext(AuthModalContext);
   const postComment = async (event) => {
+    if (!user.username) {
+      authModalContext.setVisible("login");
+    }
     event.preventDefault();
     console.info(window.location.pathname)
     const url = window.location.pathname

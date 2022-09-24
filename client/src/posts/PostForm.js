@@ -1,6 +1,6 @@
-import Avatar from "./reddit_avatar.png";
+import Avatar from "../reddit_avatar.png";
 import { useContext } from "react";
-import NewPostModalContext from "./context/NewPostModalContext";
+import NewPostModalContext from "../context/NewPostModalContext";
 const PostForm = () => {
 
   const modalContext = useContext(NewPostModalContext);

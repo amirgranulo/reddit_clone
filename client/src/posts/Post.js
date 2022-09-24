@@ -1,13 +1,13 @@
 import {Link} from "react-router-dom";
-import timeSince from "./utils/timeSince";
+import timeSince from "../utils/timeSince";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
-import Vote from "./Vote";
+import Vote from "../Vote";
 import { useContext,useEffect  } from "react";
-import UserContext from "./context/UserContext";
+import UserContext from "../context/UserContext";
 import axios from "axios";
-import RootCommentContext from "./context/RootCommentContext";
+import RootCommentContext from "../context/RootCommentContext";
 const Post = (props) => {
 
   const [votes, setVotes] = useState([]);

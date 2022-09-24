@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 
-import Button from "./UI/Button";
-import UserInput from "./UI/UserInput";
-import AuthModalContext from "./context/AuthModalContext";
+import Button from "../UI/Button";
+import UserInput from "../UI/UserInput";
+import AuthModalContext from "../context/AuthModalContext";
 import ClickOutHandler from "react-clickout-handler";
-import UserContext from "./context/UserContext";
+import UserContext from "../context/UserContext";
 
 const AuthentificationModal = (props) => {
   const userContext = useContext(UserContext);

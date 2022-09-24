@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useState,useEffect } from "react";
 import Post from "./Post";
 import axios from "axios";
-import SubredditContext from "./context/SubredditContext";
+import SubredditContext from "../context/SubredditContext";
 
 const PostsList = (props) => {
     const [posts,setPosts] = useState([]);

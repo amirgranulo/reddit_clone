@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import SubredditContext from "./context/SubredditContext";
-import RedirectContext from "./context/RedirectContext";
+import SubredditContext from "../context/SubredditContext";
+import RedirectContext from "../context/RedirectContext";
 import ClickOutHandler from "react-clickout-handler";
-import UserInput from "./UI/UserInput";
-import Button from "./UI/Button";
+import UserInput from "../UI/UserInput";
+import Button from "../UI/Button";
 import axios from "axios";
 
 const SubRedditFormModal = () => {
