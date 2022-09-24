@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import SubredditContext from "./context/SubredditContext";
+import SubredditContext from "../context/SubredditContext";
 
 function SubRedditHeader() {
     const context = useContext(SubredditContext);

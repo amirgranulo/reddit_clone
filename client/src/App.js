@@ -6,7 +6,7 @@ import AuthentificationModal from "./modals/AuthentificationModal";
 import AuthModalContext from "./context/AuthModalContext";
 import UserContext from "./context/UserContext";
 import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
-import SubReddit from "./SubReddit";
+import SubReddit from "./subreddits/SubReddit";
 import PostPage from "./posts/PostPage";
 import PostFormModal from "./modals/PostFormModal";
 import NewPostModalContext from "./context/NewPostModalContext";
