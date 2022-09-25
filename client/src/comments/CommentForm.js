@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import SubredditContext from "../context/SubredditContext";
 import AuthModalContext from "../context/AuthModalContext";
 import UserContext from "../context/UserContext";
 import Button from "../UI/Button";
@@ -13,7 +12,6 @@ const CommentForm = (props) => {
   const handleCommentOnChange = (event) => {
     setComment(event.target.value);
   };
-  const subredditContext = useContext(SubredditContext);
   const authModalContext = useContext(AuthModalContext);
   const postComment = async (event) => {
     if (!user.username) {

@@ -1,6 +1,6 @@
 import express from "express";
-import Post from "./models/Post.js";
-import { getUserFromToken } from "./utils/UserUtils.js";
+import Post from "../models/Post.js";
+import { getUserFromToken } from "../utils/UserUtils.js";
 
 const router = express.Router();
 
@@ -42,7 +42,6 @@ router.post("/posts", async (req, res) => {
       subreddit: subreddit,
     });
     const savedPost = await post.save();
-    console.info("saved post : " + savedPost);
     return res.json(savedPost);
   } catch (error) {
     console.log(error);

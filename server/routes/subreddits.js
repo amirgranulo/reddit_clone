@@ -1,6 +1,6 @@
 import express  from "express";
-import Subreddit from "./models/Subreddit.js";
-import {getUserFromToken} from "./utils/UserUtils.js"
+import Subreddit from "../models/Subreddit.js";
+import {getUserFromToken} from "../utils/UserUtils.js"
 
 const router = express.Router();
 

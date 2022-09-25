@@ -1,6 +1,6 @@
 import express from 'express';
-import {getUserFromToken} from "./utils/UserUtils.js"
-import Vote from './models/Vote.js';
+import {getUserFromToken} from "../utils/UserUtils.js"
+import Vote from '../models/Vote.js';
 const router = express.Router();
 
 router.get('/vote/:id/:type', async (req,res) => {

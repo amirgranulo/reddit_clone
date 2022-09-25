@@ -5,10 +5,10 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import Post from "./models/Post.js";
-import voting from "./voting.js";
-import subreddits from "./subreddits.js";
-import authentication from "./authentication.js"
-import posts from "./posts.js";
+import voting from "./routes/voting.js";
+import subreddits from "./routes/subreddits.js";
+import authentication from "./routes/authentication.js"
+import posts from "./routes/posts.js";
 const app = express();
 import Subreddit from "./models/Subreddit.js";
 
